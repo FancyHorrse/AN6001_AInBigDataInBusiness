@@ -1,7 +1,5 @@
-from flask import Flask, render_template, request
+from flask import Flask, request, render_template
 import joblib
-
-# import scikit-learn as sklearn
 
 app = Flask(__name__)
 
@@ -27,11 +25,14 @@ def dbs():
 def dbs_prediction():
     q = float(request.form.get("q"))
     print(q)
-
-    model = joblib.load("./dbs.pkl")
+    model = joblib.load("dbs.pkl")
     r = model.predict([[q]])
+    return render_template("dbs_prediction.html", r=r[0][0])
 
-    return render_template("dbs_prediction.html", r=r[0])
+
+@app.route("/creditability", methods=["GET", "POST"])
+def creditability():
+    return render_template("creditability.html")
 
 
 if __name__ == "__main__":
